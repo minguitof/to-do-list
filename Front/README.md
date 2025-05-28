@@ -1,5 +1,3 @@
-
-
 # to-do-list
 
 Este proyecto es una aplicación de lista de tareas que tendrá:
@@ -14,10 +12,11 @@ Este proyecto es una aplicación de lista de tareas que tendrá:
 
 ## How to start the frontend
 
-bash
+```bash
 cd Front
 npm install
 npm run dev
+```
 
 ## Recommended IDE Setup
 
