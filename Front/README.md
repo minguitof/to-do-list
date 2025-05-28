@@ -10,7 +10,7 @@ Este proyecto es una aplicación de lista de tareas que tendrá:
 ## Structure of Project
 
 - `/Front`: Aplicación frontend (en desarrollo) 
-- `/Back`: Futuro backend con Laravel
+- `/Back`: Futuro backend con Laravel (Cooming Soon)
 
 ## How to start the frontend
 
