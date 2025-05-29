@@ -1,49 +1,63 @@
+<script setup>
+import { defineProps, defineEmits } from 'vue'
+import draggable from 'vuedraggable'
+
+const props = defineProps({
+  title: String,
+  notes: Array,
+  type: String, // "todo", "doing", "done"
+})
+
+const emit = defineEmits(['update:notes'])
+
+function onUpdateModelValue(newValue) {
+  emit('update:notes', newValue)
+}
+
+
+</script>
+
 <template>
-
-  <div class="column-box" :class="columnKey">
-
-  <div class="column-box">
+  <div :class="['column-box', type]">
     <h2>{{ title }}</h2>
-    <ul class="note-list">
-      <li v-for="note in notes" :key="note.id" class="note">
-        {{ note.text }}
-      </li>
-    </ul>
-  </div>
+    <div :class="['column-separator', type]"></div> <!-- la barrita -->
 
+    <draggable
+      :modelValue="notes"
+      @update:modelValue="onUpdateModelValue"
+      :group="{ name: 'notes' }"
+      item-key="id"
+      style="min-height: 150px;"
+    >
+      <template #item="{ element }">
+        <div style="
+          background: white; 
+          padding: 12px; 
+          margin-bottom: 10px; 
+          border-radius: 6px; 
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          user-select: none;
+          cursor: grab;
+        ">
+          {{ element.text }}
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
 
-
-<script>
-export default {
-  name: 'Column',
-  props: {
-  title: {
-    type: String,
-    required: true
-  },
-  notes: {
-    type: Array,
-    default: () => []
-  },
-  columnKey: {
-    type: String,
-    required: true
-  }
-}
-};
-</script>
 <style scoped>
 
 .column-box {
+  background: #e0e0e0;
+  padding: 16px;
+  border-radius: 8px;
+  width: 280px;
+  min-height: 200px;
   flex: 1;
-  min-width: 250px;
   max-width: 300px;
-  border: 2px solid #ccc; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);  
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
-
 
 .note-list {
   list-style: none;
@@ -103,5 +117,24 @@ export default {
   font-size: 2rem;
 }
 
+.column-separator {
+  height: 4px;
+  width: 100%;
+  margin: 8px 0 16px;
+  border-radius: 2px;
+}
+
+/* Color por tipo */
+.column-separator.todo {
+  background-color: #42a5f5;
+}
+
+.column-separator.doing {
+  background-color: #ffb300;
+}
+
+.column-separator.done {
+  background-color: #66bb6a;
+}
 
 </style>

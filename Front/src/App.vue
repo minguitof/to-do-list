@@ -27,7 +27,7 @@ export default {
   flex-direction: column; /* Coloca hijos en vertical */
   height: 100vh;
   box-sizing: border-box;
-  color: white;
+  color: rgb(46, 24, 24);
 }
 
 .title-center {
@@ -72,7 +72,7 @@ html, body, #app {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: rainbow-text 5s linear infinite;
-  text-align: center;
+  text-align: center;   
 }
 
 @keyframes rainbow-text {

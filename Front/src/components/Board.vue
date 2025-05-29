@@ -2,27 +2,21 @@
 import { reactive } from 'vue'
 import Column from './Column.vue'
 
-// Estado con las columnas y sus notas
 const columns = reactive({
   todo: [
-    { id: 1, text: 'Aprender Vue' },
-    { id: 2, text: 'Hacer ejercicio' }
+    { id: 1, text: 'Comprar leche' },
+    { id: 2, text: 'Hacer ejercicio' },
   ],
   doing: [
-    { id: 3, text: 'Estudiar lógica' }
+    { id: 3, text: 'Aprender Vue 3' },
   ],
   done: [
-    { id: 4, text: 'Leer un libro' }
-  ]
+    { id: 4, text: 'Leer un libro' },
+  ],
 })
 
-// Función para mover notas entre columnas (más adelante puedes agregar lógica drag & drop)
-function moveNote(noteId, from, to) {
-  const index = columns[from].findIndex(note => note.id === noteId)
-  if (index !== -1) {
-    const [note] = columns[from].splice(index, 1)
-    columns[to].push(note)
-  }
+function updateNotes(columnKey, newNotes) {
+  columns[columnKey] = newNotes
 }
 </script>
 
@@ -30,26 +24,28 @@ function moveNote(noteId, from, to) {
   <div class="board">
     <Column
       title="Por hacer"
+      type="todo"
       :notes="columns.todo"
-      @moveNote="moveNote"
-      columnKey="todo"
+      @update:notes="updateNotes('todo', $event)"
     />
     <Column
-      title="Haciendo"
+      title="En progreso"
+      type="doing"
       :notes="columns.doing"
-      @moveNote="moveNote"
-      columnKey="doing"
+      @update:notes="updateNotes('doing', $event)"
     />
     <Column
-      title="Terminado"
+      title="Hecho"
+      type="done"
       :notes="columns.done"
-      @moveNote="moveNote"
-      columnKey="done"
+      @update:notes="updateNotes('done', $event)"
     />
   </div>
 </template>
 
+
 <style scoped>
+
 .board {
   display: flex;
   gap: 1rem;
