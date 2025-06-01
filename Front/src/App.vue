@@ -1,13 +1,15 @@
 <template>
-  <div class="main-container">
-    <div class="title-center">
-        <h1 class="rainbow-text">Lista To-Do-List</h1>
-    </div>
-
-    <div class="column-container">
-    <Board />
-    </div>
-  </div>
+    <!-- div que permite jugar con el estilo del titulo -->
+    <h1 class="rainbow-text">Lista To-Do-List</h1> 
+      
+    <!-- contenedor principal que define cómo se estructura la página -->
+    <div class="main-container">
+      <!-- subcontenedor dentro de main-container, donde se posicionan los elementos de forma horizontal o vertical (según el caso). Aquí aloja al componente <Board /> -->
+      <div class="column-container">
+        <Board />
+      </div>
+    </div> 
+      
 </template>
 
 <script>
@@ -23,26 +25,21 @@ export default {
 <style scoped>
 
 .main-container {
-  display: flex;
-  flex-direction: column; /* Coloca hijos en vertical */
-  height: 100vh;
-  box-sizing: border-box;
-  color: rgb(46, 24, 24);
-}
-
-.title-center {
-  text-align: center;
-  margin-top: 1rem;
+  display: flex; /* Convierte el contenedor en un contenedor flex, lo que permite alinear sus hijos con reglas de flexbox */
+  flex-direction: column; /* Coloca los elementos hijos en columna (de arriba hacia abajo) */
+  height: 100vh; /* Hace que el contenedor ocupe el 100% de la altura del viewport */
+  box-sizing: border-box; /* Incluye padding y border en el cálculo del ancho/alto total */
+  color: rgb(34, 19, 19); /* Color de texto oscuro/marrón para los elementos dentro */
 }
 
 .column-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 1rem;
-  gap: 1rem;
-  flex: 1; /* Para que ocupe el resto del espacio */
-  color: #333;
+  display: flex; /* También es un contenedor flex. */
+  justify-content: center; /* Centra horizontalmente el contenido (por ejemplo, el <Board />). */
+  align-items: flex-start; /* Alinea los elementos al inicio vertical del contenedor */
+  padding: 1rem; /* Añade un margen interno alrededor del contenido */
+  gap: 1rem; /* Espacio entre los elementos hijos (si hay más de uno) */
+  flex: 1; /* Hace que este contenedor crezca para llenar el espacio disponible dentro del .main-container */
+  color: #000000; /* Establece el color del texto a gris oscuro */
 }
 
 html, body, #app {
@@ -56,33 +53,46 @@ html, body, #app {
 /* Degradado para el titulo */
 
 .rainbow-text {
-  font-weight: bold;
-  font-size: 4rem;
-  background: linear-gradient(
-    90deg,
+  font-weight: bold; /* Hace que el texto sea más grueso */
+  font-size: 4rem; /* Tamaño del titulo */
+  background: linear-gradient( /* Colores */
+    to right,
     red,
     orange,
     yellow,
     green,
     blue,
     indigo,
-    violet
+    violet,
+    indigo,
+    blue,
+    green,
+    yellow,
+    orange,
+    red
   );
-  background-size: 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbow-text 5s linear infinite;
-  text-align: center;   
+  background-size: 200% 100%; /* Ajusta el tamaño del fondo (en este caso, el gradiente) */
+  background-position: center; /* Define desde dónde se muestra el fondo dentro del elemento */
+  -webkit-background-clip: text; /* Controla cómo se recorta el fondo */
+  -webkit-text-fill-color: transparent; /* Hace que el color real del texto sea transparente  */
+  animation: pulse-gradient 4s ease-in-out infinite; /* Aplica una animación llamada pulse-gradient */
+  text-align: center; /* Centra el texto horizontalmente dentro de su contenedor */
 }
 
-@keyframes rainbow-text {
+
+@keyframes pulse-gradient {
   0% {
-    background-position: 0%;
+    background-size: 200% 100%;
+    background-position: center;
+  }
+  50% {
+    background-size: 400% 100%;
+    background-position: left;
   }
   100% {
-    background-position: 100%;
+    background-size: 200% 100%;
+    background-position: center;
   }
 }
-
 
 </style>

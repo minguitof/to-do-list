@@ -1,34 +1,50 @@
 <script setup>
+// Aca realizamos las importaciones necesarias para usar en el template
 import { defineProps, defineEmits } from 'vue'
-import draggable from 'vuedraggable'
+import draggable from 'vuedraggable' // Aca importamos a draggable, nos permite hacer animaciones
 
+// variable donde definimos los name de cada propiedad
 const props = defineProps({
   title: String,
   notes: Array,
   type: String, // "todo", "doing", "done"
 })
 
+// variable donde definimos los name de cada evento
 const emit = defineEmits(['update:notes'])
 
+// funcion que toma la variable emit y actualiza los valores de cada nota si hay una nueva
 function onUpdateModelValue(newValue) {
   emit('update:notes', newValue)
 }
-
-
 </script>
 
 <template>
-  <div :class="['column-box', type]">
+  <!-- Contenedor que nos permite crear las columnas cada una con su respectivo name -->
+  <div :class="['column-box', type]"> 
+    <!-- permite darle estilo al titulo de cada una de las columnas -->
     <h2>{{ title }}</h2>
+    <!-- nos crea un separador con estilo el cual separa el titulo de las notas -->
     <div :class="['column-separator', type]"></div> <!-- la barrita -->
 
+    <!-- 
+      Componente draggable (de la librería vuedraggable)
+      - Permite arrastrar y soltar notas dentro de la columna
+      - También permite moverlas entre columnas (porque comparten el mismo grupo)
+
+      :modelValue="notes"                       -- Lista reactiva que se va a ordenar --
+      @update:modelValue="onUpdateModelValue"   -- Evento cuando se arrastra algo --
+      :group="{ name: 'notes' }"                -- Agrupación para mover entre columnas --
+      item-key="id"                             -- Clave única para cada nota --
+    -->
     <draggable
-      :modelValue="notes"
+      :modelValue="notes" 
       @update:modelValue="onUpdateModelValue"
       :group="{ name: 'notes' }"
       item-key="id"
       style="min-height: 150px;"
     >
+    <!-- Slot que renderiza cada ítem individual -->
       <template #item="{ element }">
         <div style="
           background: white; 
@@ -39,7 +55,7 @@ function onUpdateModelValue(newValue) {
           user-select: none;
           cursor: grab;
         ">
-          {{ element.text }}
+          {{ element.text }} <!-- Muestra el texto de la nota -->
         </div>
       </template>
     </draggable>
@@ -48,6 +64,7 @@ function onUpdateModelValue(newValue) {
 
 <style scoped>
 
+/* Contenedor visual de cada columna (Todo, Doing, Done) */
 .column-box {
   background: #e0e0e0;
   padding: 16px;
@@ -59,24 +76,7 @@ function onUpdateModelValue(newValue) {
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.note-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-  text-align: left;
-}
-
-.note {
-  background-color: #f0f4ff;
-  border: 1px solid #ccc;
-  border-left: 4px solid #3f51b5;
-  border-radius: 6px;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-  font-size: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
+/* Si el ancho de la pantalla es menor o igual a 768px (por ejemplo, una tablet o celular), entonces el contenedor .board */
 @media (max-width: 768px) {
   .board {
     flex-direction: column;
@@ -84,7 +84,7 @@ function onUpdateModelValue(newValue) {
   }
 }
 
-/* Por hacer */
+/* estilo - Por hacer */
 .column-box.todo {
   border-color: #42a5f5;
 }
@@ -95,7 +95,7 @@ function onUpdateModelValue(newValue) {
   font-size: 2rem;
 }
 
-/* Haciendo */
+/* estilo -  Haciendo */
 .column-box.doing {
   border-color: #ffb300;
 }
@@ -106,7 +106,7 @@ function onUpdateModelValue(newValue) {
   font-size: 2rem;
 }
 
-/* Terminado */
+/* estilo - Terminado */
 .column-box.done {
   border-color: #66bb6a;
 }
@@ -117,6 +117,7 @@ function onUpdateModelValue(newValue) {
   font-size: 2rem;
 }
 
+/* Separador de la columna y titulo - sí la barrita */
 .column-separator {
   height: 4px;
   width: 100%;
