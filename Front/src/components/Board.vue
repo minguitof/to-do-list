@@ -1,23 +1,38 @@
 <script setup>
-import { reactive } from 'vue' // convierte un objeto normal en uno reactivo (Vue detecta los cambios)
-import Column from './Column.vue' // componente hijo que representa cada columna del tablero (Por hacer, En progreso, Hecho)
+import { reactive, watch, onMounted } from 'vue'
+import Column from './Column.vue'
 
-// Lista de notas basicas quemadas en codigo, mas adelante seran agregadas por el usuario
-//El objeto completo es reactivo, así que cualquier cambio se refleja en la interfaz sin recargar.
-const columns = reactive({ 
-  todo: [
-    { id: 1, text: 'Comprar leche' },
-    { id: 2, text: 'Hacer ejercicio' },
-  ],
-  doing: [
-    { id: 3, text: 'Aprender Vue 3' },
-  ],
-  done: [
-    { id: 4, text: 'Leer un libro' },
-  ],
-})
+const STORAGE_KEY = 'kanban-notes' //Se define una clave constante para identificar tus datos dentro del localStorage
 
-// Cuando una nota se mueve (drag & drop), se llama esta función.
+// Cargar desde localStorage (o usar datos por defecto)
+const storedData = localStorage.getItem(STORAGE_KEY)
+const columns = reactive(
+  storedData
+    ? JSON.parse(storedData)
+    : {
+        todo: [
+          { id: 1, text: 'Comprar leche' },
+          { id: 2, text: 'Hacer ejercicio' },
+        ],
+        doing: [
+          { id: 3, text: 'Aprender Vue 3' },
+        ],
+        done: [
+          { id: 4, text: 'Leer un libro' },
+        ],
+      }
+)
+
+// Observar los cambios en columns y guardarlos automáticamente
+watch(
+  () => columns,
+  (newVal) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newVal))
+  },
+  { deep: true }
+)
+
+// Actualiza la columna con nuevas notas
 function updateNotes(columnKey, newNotes) {
   columns[columnKey] = newNotes
 }
