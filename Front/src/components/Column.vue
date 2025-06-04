@@ -1,23 +1,47 @@
 <script setup>
-// Aca realizamos las importaciones necesarias para usar en el template
+import { ref, nextTick } from 'vue'
 import { defineProps, defineEmits } from 'vue'
-import draggable from 'vuedraggable' // Aca importamos a draggable, nos permite hacer animaciones
+import draggable from 'vuedraggable'
 
-// variable donde definimos los name de cada propiedad
 const props = defineProps({
   title: String,
   notes: Array,
-  type: String, // "todo", "doing", "done"
+  type: String,
 })
 
-// variable donde definimos los name de cada evento
 const emit = defineEmits(['update:notes'])
 
-// funcion que toma la variable emit y actualiza los valores de cada nota si hay una nueva
 function onUpdateModelValue(newValue) {
   emit('update:notes', newValue)
 }
+
+const newNoteText = ref('')
+const showInput = ref(false)
+const inputRef = ref(null) // referencia al input
+
+function toggleInput() {
+  showInput.value = !showInput.value
+  if (showInput.value) {
+    nextTick(() => {
+      inputRef.value?.focus()
+    })
+  }
+}
+
+function addNote() {
+  const text = newNoteText.value.trim()
+  if (!text) return
+
+  const newNote = {
+    id: Date.now(),
+    text
+  }
+  emit('update:notes', [...props.notes, newNote])
+  newNoteText.value = ''
+  showInput.value = false
+}
 </script>
+
 
 <template>
   <!-- Contenedor que nos permite crear las columnas cada una con su respectivo name -->
@@ -59,6 +83,22 @@ function onUpdateModelValue(newValue) {
         </div>
       </template>
     </draggable>
+    <!-- Botón para mostrar/ocultar el input -->
+    <button @click="toggleInput" class="add-note-button">
+      ➕ Agregar nota
+    </button>
+
+    <!-- Input para escribir nueva nota -->
+    <div v-if="showInput" class="add-note-form">
+      <input
+      ref="inputRef"
+      v-model="newNoteText"
+      @keyup.enter="addNote"
+      type="text"
+      placeholder="Escribe una nueva nota"
+      />
+      <button @click="addNote">Agregar</button>
+    </div>
   </div>
 </template>
 
@@ -137,5 +177,52 @@ function onUpdateModelValue(newValue) {
 .column-separator.done {
   background-color: #66bb6a;
 }
+
+/* Estilo para el boton */
+.add-note-button {
+  margin-top: 1rem;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border: 2px dashed #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.add-note-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Estilo para los input del usuario para cada columna */
+.add-note-form {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+
+.add-note-form input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.add-note-form button {
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #42a5f5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-note-form button:hover {
+  background-color: #1e88e5;
+}
+
 
 </style>
