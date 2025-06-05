@@ -11,7 +11,7 @@ const columns = reactive(
     ? JSON.parse(storedData)
     : {
         todo: [
-          { id: 1, text: 'Comprar leche' },
+          { id: 1, text: 'Comprar Portatil' },
           { id: 2, text: 'Hacer ejercicio' },
         ],
         doing: [

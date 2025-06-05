@@ -1,26 +1,26 @@
 <script setup>
-import { ref, nextTick } from 'vue'
-import { defineProps, defineEmits } from 'vue'
-import { onMounted, onBeforeUnmount } from 'vue'
+import { ref, nextTick, defineProps, defineEmits, onMounted, onBeforeUnmount } from 'vue'
 import draggable from 'vuedraggable'
 import IconThreePoints from './icons/IconThreePoints.vue'
 
+// --- Refs
+const newNoteText = ref('') // contenido que el usuario escribe.
+const showInput = ref(false) 
+const inputRef = ref(null) // referencia al input para poder hacerle focus.
+const editingId = ref(null) // guarda el ID de la nota que se está editando.
+const editText = ref('') // texto temporal que se está editando.
+const activeMenuId = ref(null) // Menú contextual (tres puntos)
+
+// --- Props y emits
 const props = defineProps({
-  title: String,
-  notes: Array,
+  title: String, //título del bloque de notas.
+  notes: Array, // lista de notas, tipo array.
   type: String,
 })
 
-const emit = defineEmits(['update:notes'])
+const emit = defineEmits(['update:notes']) // útil para actualizar la lista desde el padre.
 
-function onUpdateModelValue(newValue) {
-  emit('update:notes', newValue)
-}
-
-const newNoteText = ref('')
-const showInput = ref(false)
-const inputRef = ref(null) // referencia al input
-
+// controla si el input está visible.
 function toggleInput() {
   showInput.value = !showInput.value
   if (showInput.value) {
@@ -30,6 +30,12 @@ function toggleInput() {
   }
 }
 
+// Función que emite una nueva lista de notas.
+function onUpdateModelValue(newValue) { 
+  emit('update:notes', newValue)
+}
+
+// Crea una nueva nota con un id único (timestamp) y la agrega a la lista.
 function addNote() {
   const text = newNoteText.value.trim()
   if (!text) return
@@ -43,27 +49,27 @@ function addNote() {
   showInput.value = false
 }
 
-const editingId = ref(null)
-const editText = ref('')
-
-const activeMenuId = ref(null)
-
+// Menú contextual (tres puntos)
+// Maneja qué menú (de los 3 puntos) está abierto actualmente.
 function toggleMenu(id) {
   activeMenuId.value = activeMenuId.value === id ? null : id
 }
 
+// Maneja qué menú (de los 3 puntos) está abierto actualmente.
 function closeMenu(id) {
   if (activeMenuId.value === id) {
     activeMenuId.value = null
   }
 }
 
+// Comienza la edición: muestra el input con el texto original.
 function startEdit(note) {
   editingId.value = note.id
   editText.value = note.text
   activeMenuId.value = null
 }
 
+// Guarda los cambios editados y actualiza la lista.
 function saveEdit(note) {
   const updatedText = editText.value.trim()
   if (!updatedText) return
@@ -74,10 +80,12 @@ function saveEdit(note) {
   editingId.value = null
 }
 
+// Cancela la edición sin guardar.
 function cancelEdit() {
   editingId.value = null
 }
 
+// Muestra confirmación antes de eliminar la nota seleccionada.
 function confirmDelete(note) {
   activeMenuId.value = null
   const confirmed = confirm('¿Estás seguro de eliminar esta nota?')
@@ -86,12 +94,14 @@ function confirmDelete(note) {
   emit('update:notes', updatedNotes)
 }
 
+// Si haces clic fuera de una tarjeta, se cierra el menú abierto.
 function handleClickOutside(event) {
   if (!event.target.closest('.note-card')) {
     activeMenuId.value = null
   }
 }
 
+// Se añade un listener al montar el componente y se elimina al desmontarlo para evitar fugas de memoria.
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
 })
@@ -120,6 +130,7 @@ onBeforeUnmount(() => {
       @update:modelValue="onUpdateModelValue"   -- Evento cuando se arrastra algo --
       :group="{ name: 'notes' }"                -- Agrupación para mover entre columnas --
       item-key="id"                             -- Clave única para cada nota --
+      style="min-height: 150px;"                -- establece una altura mínima para el elemento --
     -->
     <draggable
       :modelValue="notes" 
