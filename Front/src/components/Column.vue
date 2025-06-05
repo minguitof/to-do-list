@@ -1,7 +1,9 @@
 <script setup>
 import { ref, nextTick } from 'vue'
 import { defineProps, defineEmits } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 import draggable from 'vuedraggable'
+import IconThreePoints from './icons/IconThreePoints.vue'
 
 const props = defineProps({
   title: String,
@@ -40,6 +42,64 @@ function addNote() {
   newNoteText.value = ''
   showInput.value = false
 }
+
+const editingId = ref(null)
+const editText = ref('')
+
+const activeMenuId = ref(null)
+
+function toggleMenu(id) {
+  activeMenuId.value = activeMenuId.value === id ? null : id
+}
+
+function closeMenu(id) {
+  if (activeMenuId.value === id) {
+    activeMenuId.value = null
+  }
+}
+
+function startEdit(note) {
+  editingId.value = note.id
+  editText.value = note.text
+  activeMenuId.value = null
+}
+
+function saveEdit(note) {
+  const updatedText = editText.value.trim()
+  if (!updatedText) return
+  const updatedNotes = props.notes.map(n =>
+    n.id === note.id ? { ...n, text: updatedText } : n
+  )
+  emit('update:notes', updatedNotes)
+  editingId.value = null
+}
+
+function cancelEdit() {
+  editingId.value = null
+}
+
+function confirmDelete(note) {
+  activeMenuId.value = null
+  const confirmed = confirm('¿Estás seguro de eliminar esta nota?')
+  if (!confirmed) return
+  const updatedNotes = props.notes.filter(n => n.id !== note.id)
+  emit('update:notes', updatedNotes)
+}
+
+function handleClickOutside(event) {
+  if (!event.target.closest('.note-card')) {
+    activeMenuId.value = null
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
 </script>
 
 
@@ -70,16 +130,27 @@ function addNote() {
     >
     <!-- Slot que renderiza cada ítem individual -->
       <template #item="{ element }">
-        <div style="
-          background: white; 
-          padding: 12px; 
-          margin-bottom: 10px; 
-          border-radius: 6px; 
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-          user-select: none;
-          cursor: grab;
-        ">
-          {{ element.text }} <!-- Muestra el texto de la nota -->
+        <div class="note-card" @click.outside="closeMenu(element.id)">
+          <div v-if="editingId === element.id">
+            <input
+              v-model="editText"
+              @keyup.enter="saveEdit(element)"
+              @blur="cancelEdit"
+              class="note-input"
+              autofocus
+            />
+          </div>
+          <div v-else class="note-content">
+            <span>{{ element.text }}</span>
+             <button class="menu-button" @click.stop="toggleMenu(element.id)">
+               <IconThreePoints />
+              </button>
+
+            <div v-if="activeMenuId === element.id" class="menu-dropdown">
+              <button @click="startEdit(element)">✏️ Editar</button>
+              <button @click="confirmDelete(element)">🗑️ Eliminar</button>
+            </div>
+          </div>
         </div>
       </template>
     </draggable>
@@ -100,6 +171,7 @@ function addNote() {
       <button @click="addNote">Agregar</button>
     </div>
   </div>
+  <!-- Prueba de íconos funcionando 100% -->
 </template>
 
 <style scoped>
@@ -224,5 +296,68 @@ function addNote() {
   background-color: #1e88e5;
 }
 
+.note-card {
+  background: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+}
+
+/* Cuando la estés agarrando (dragging) */
+.note-card:active {
+  cursor: grabbing;
+}
+
+.menu-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  padding: 0;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 36px;
+  right: 12px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  z-index: 10;
+}
+
+.menu-dropdown button {
+  border: none;
+  background: none;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.menu-dropdown button:hover {
+  background-color: #eee;
+}
+
+.note-input {
+  width: 100%;
+  padding: 6px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
 </style>
