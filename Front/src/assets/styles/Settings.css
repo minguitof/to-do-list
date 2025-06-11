@@ -1,0 +1,37 @@
+.settings-wrapper {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+}
+
+.gear-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.gear-icon {
+  width: 28px;
+  height: 28px;
+  color: #333;
+}
+
+.dark .gear-icon {
+  color: #eee;
+}
+
+.settings-menu {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dark .settings-menu {
+  background: #333;
+  color: #fff;
+  border-color: #555;
+}

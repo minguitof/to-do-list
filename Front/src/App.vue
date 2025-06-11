@@ -4,6 +4,7 @@
       
     <!-- contenedor principal que define cómo se estructura la página -->
     <div class="main-container">
+      <Settings />
       <!-- subcontenedor dentro de main-container, donde se posicionan los elementos de forma horizontal o vertical (según el caso). Aquí aloja al componente <Board /> -->
       <div class="column-container">
         <Board />
@@ -14,85 +15,17 @@
 
 <script>
 import Board from './components/Board.vue';
+// import IconSettings from './components/icons/IconSettings.vue';
+import Settings from './components/Settings.vue';
 
 export default {
   components: {
-    Board
+    Board,
+    Settings
   }
 };
 </script>
 
-<style scoped>
-
-.main-container {
-  display: flex; /* Convierte el contenedor en un contenedor flex, lo que permite alinear sus hijos con reglas de flexbox */
-  flex-direction: column; /* Coloca los elementos hijos en columna (de arriba hacia abajo) */
-  height: 100vh; /* Hace que el contenedor ocupe el 100% de la altura del viewport */
-  box-sizing: border-box; /* Incluye padding y border en el cálculo del ancho/alto total */
-  color: rgb(34, 19, 19); /* Color de texto oscuro/marrón para los elementos dentro */
-}
-
-.column-container {
-  display: flex; /* También es un contenedor flex. */
-  justify-content: center; /* Centra horizontalmente el contenido (por ejemplo, el <Board />). */
-  align-items: flex-start; /* Alinea los elementos al inicio vertical del contenedor */
-  padding: 1rem; /* Añade un margen interno alrededor del contenido */
-  gap: 1rem; /* Espacio entre los elementos hijos (si hay más de uno) */
-  flex: 1; /* Hace que este contenedor crezca para llenar el espacio disponible dentro del .main-container */
-  color: #000000; /* Establece el color del texto a gris oscuro */
-}
-
-html, body, #app {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Degradado para el titulo */
-
-.rainbow-text {
-  font-weight: bold; /* Hace que el texto sea más grueso */
-  font-size: 4rem; /* Tamaño del titulo */
-  background: linear-gradient( /* Colores */
-    to right,
-    red,
-    orange,
-    yellow,
-    green,
-    blue,
-    indigo,
-    violet,
-    indigo,
-    blue,
-    green,
-    yellow,
-    orange,
-    red
-  );
-  background-size: 200% 100%; /* Ajusta el tamaño del fondo (en este caso, el gradiente) */
-  background-position: center; /* Define desde dónde se muestra el fondo dentro del elemento */
-  -webkit-background-clip: text; /* Controla cómo se recorta el fondo */
-  -webkit-text-fill-color: transparent; /* Hace que el color real del texto sea transparente  */
-  animation: pulse-gradient 4s ease-in-out infinite; /* Aplica una animación llamada pulse-gradient */
-  text-align: center; /* Centra el texto horizontalmente dentro de su contenedor */
-}
-
-
-@keyframes pulse-gradient {
-  0% {
-    background-size: 200% 100%;
-    background-position: center;
-  }
-  50% {
-    background-size: 400% 100%;
-    background-position: left;
-  }
-  100% {
-    background-size: 200% 100%;
-    background-position: center;
-  }
-}
-
+<style>
+@import '@/assets/styles/App.css';
 </style>
