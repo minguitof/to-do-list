@@ -4,7 +4,8 @@ This is a task management app built as a personal project, currently under devel
 
 ## 🎬 Demo
 
-[![See demo on YouTube](https://img.youtube.com/vi/au6BE3rt-v4/hqdefault.jpg)](https://youtu.be/au6BE3rt-v4)
+See demo on YouTube:
+<iframe width="1725" height="671" src="https://www.youtube.com/embed/au6BE3rt-v4" title="Demo | To-Do-List in Vue Js" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## 🚧 Project Structure
 
