@@ -4,7 +4,7 @@ This is a task management app built as a personal project, currently under devel
 
 ## 🎬 Demo
 
-![Demo](assets/preview.gif)
+![Demo](assets/preview-demo.mp4)
 
 ## 🚧 Project Structure
 
