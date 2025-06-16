@@ -1,20 +1,46 @@
 # to-do-list
 
-Este proyecto es una aplicación de lista de tareas que tendrá:
+This is a task management app built as a personal project, currently under development.
+
+## 🎬 Demo
+
+![Demo](assets/preview.gif)
+
+## 🚧 Project Structure
 
 - Frontend hecho con Vite + Vue.js
 - Backend hecho con Laravel (conexión con base de datos y API REST) - COOMING SOON
 
 ## Structure of Project
 
-- `/Front`: Aplicación frontend (en desarrollo) 
-- `/Back`: Futuro backend con Laravel (Cooming Soon)
+- `/Front`: Frontend built with Vite + Vue.js
+- `/Back`: Backend with Laravel (Coming Soon)
 
 ## How to start the frontend
 
+1. Clone the repository
+
+```bash
+git clone https://github.com/minguitof/to-do-list-vue.git
+npm install
+npm run dev
+```
+
+2. Navigate to the frontend folder
+
 ```bash
 cd Front
+```
+
+3. Install dependencies
+
+```bash
 npm install
+```
+
+4. Run the app
+
+```bash
 npm run dev
 ```
 
@@ -26,7 +52,7 @@ npm run dev
 
 See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Project Setup
+## Project Setup Build Commands
 
 ```sh
 npm install
