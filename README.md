@@ -9,8 +9,8 @@ This is a task management app built as a personal project, currently under devel
 
 ## 🚧 Project Structure
 
-- Frontend hecho con Vite + Vue.js
-- Backend hecho con Laravel (conexión con base de datos y API REST) - COOMING SOON
+- Frontend built with Vite + Vue.js
+- Backend built with Laravel (database and REST API connections) - COMING SOON
 
 ## Structure of Project
 
