@@ -2,6 +2,10 @@
 
 This is a task management app built as a personal project, currently under development.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/106468bf-e779-4c8f-8082-4ef4564dec2b/deploy-status)](https://app.netlify.com/projects/to-do-list-vue-minguito/deploys)
+
+A simple to-do app built with Vue.js and deployed on Netlify.
+
 ## 🎬 Demo
 
 [![See demo on YouTube](https://img.youtube.com/vi/au6BE3rt-v4/hqdefault.jpg)](https://youtu.be/au6BE3rt-v4)
